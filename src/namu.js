@@ -1,4 +1,4 @@
-import './namu.css'
+import './namu.scss'
 
 const NAMU_SIZE = 24
 const NAMU_SIZE_QTR = NAMU_SIZE / 4

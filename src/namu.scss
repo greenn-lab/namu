@@ -1,0 +1,84 @@
+$namu-size: 24px;
+$namu-quarter-size: 6px;
+
+.namu {
+  ul,
+  li {
+    margin: 0;
+    list-style: none;
+    padding: 0;
+    position: relative;
+  }
+
+  li {
+    margin-left: $namu-size;
+
+    &::before {
+      border-left: 1px solid #AAA;
+      content: "";
+      height: 100%;
+      left: calc(#{$namu-size} * -1);
+      position: absolute;
+    }
+
+    &::after {
+      border-bottom: 1px solid #AAA;
+      border-left: 1px solid #AAA;
+      content: "";
+      height: calc(#{$namu-size} / 2);
+      left: calc(#{$namu-size} * -1);
+      position: absolute;
+      top: 0;
+      width: $namu-size;
+      z-index: -1;
+    }
+
+    &:last-child::before {
+      border: 0;
+    }
+
+    > a {
+      border-radius: 4px;
+      box-sizing: border-box;
+      display: inline-block;
+      line-height: $namu-size;
+      margin-left: $namu-quarter-size;
+      padding: 0 4px;
+      transition: all .4s;
+    }
+  }
+
+  &--dragging {
+    background-color: #EEE;
+    outline: 1px dashed #AAA;
+    opacity: .3;
+  }
+
+  &--zombie {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' version='1.1' width='8' height='8' viewBox='0 0 8 8'%3E%3Cg%3E%3Cline style='stroke:rgb(220,220,220);stroke-width:1' x1='8' y1='0' x2='-0' y2='8' /%3E%3C/g%3E%3C/svg%3E");
+    opacity: .5;
+  }
+
+  &__knob {
+    background-color: transparent;
+    border: 2px solid #FFF;
+    height: calc(#{$namu-size} / 2 + 1px);
+    left: calc(#{$namu-size} / 2 * -1);
+    outline: 1px solid #AAA;
+    padding: 0;
+    position: absolute;
+    top: $namu-quarter-size;
+    width: calc(#{$namu-size} / 2 + 1px);
+  }
+
+  &__knob--purse {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' version='1.1' width='1' height='99' viewBox='0 0 1 99'%3E%3Cg%3E%3Cline style='stroke:rgb(170,170,170);stroke-width:1' x1='0' y1='0' x2='1' y2='99' /%3E%3C/g%3E%3C/svg%3E");
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+  }
+
+  ul:empty + &__knob {
+    display: none;
+  }
+
+}
