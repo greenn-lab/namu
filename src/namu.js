@@ -1,7 +1,7 @@
 import './namu.css'
 
-const BRANCH_HEIGHT = 24
-const BRANCH_HEIGHT_QTR = BRANCH_HEIGHT / 4
+const NAMU_SIZE = 24
+const NAMU_SIZE_QTR = NAMU_SIZE / 4
 
 let source,
     freeze,
@@ -33,7 +33,7 @@ const _buildUpSource = () => {
 const _outOfArea = target => !target || !target.closest('.namu')
 
 const _canBeChild = (mouseX, target) =>
-    target.previousElementSibling && mouseX > BRANCH_HEIGHT * 2
+    target.previousElementSibling && mouseX > NAMU_SIZE * 2
 const _becomeChildTo = parent => {
   if (parent) {
     let children = parent.querySelector('ul')
@@ -48,15 +48,15 @@ const _becomeChildTo = parent => {
 }
 
 const _becomeBrotherTo = (brother, mouseY) => {
-  if (mouseY < BRANCH_HEIGHT / BRANCH_HEIGHT_QTR) {
+  if (mouseY < NAMU_SIZE / NAMU_SIZE_QTR) {
     brother.before(source)
   }
-  if (mouseY > BRANCH_HEIGHT - BRANCH_HEIGHT_QTR) {
+  if (mouseY > NAMU_SIZE - NAMU_SIZE_QTR) {
     brother.after(source)
   }
 }
 
-const _canBeParent = mouseX => mouseX < -BRANCH_HEIGHT_QTR
+const _canBeParent = mouseX => mouseX < -NAMU_SIZE_QTR
     && !_outOfArea(source.parentElement?.parentElement)
 const _becomeParentTo = target => {
   _becomeBrotherTo(target, 999)
@@ -73,16 +73,11 @@ const _attachKnob = ul => {
     if (knob.classList.contains('namu-knob--purse')) {
       ul.style.display = 'block'
       knob.classList.remove('namu-knob--purse')
-    }
-    else {
+    } else {
       ul.style.display = 'none'
       knob.classList.add('namu-knob--purse')
     }
   })
-
-  console.log('attach a knob', ul.parentElement, knob)
-
-  ul.parentElement.appendChild(knob)
 
   ul.after(knob)
 }
@@ -98,7 +93,6 @@ const _event = state => streamable && source.dispatchEvent(
 )
 
 const _dragStart = e => {
-  console.log(e.target, e.offsetX)
   _init(e)
 
   _event('start')
@@ -112,8 +106,6 @@ const _dragStart = e => {
 
 const _dragOver = e => {
   e.preventDefault()
-
-  console.log(e.offsetX, e.offsetY, aim)
 
   _event('over')
   if (false === streamable) {
