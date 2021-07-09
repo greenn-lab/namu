@@ -68,14 +68,14 @@ const _freezing = (target) => {
 }
 const _attachKnob = ul => {
   const knob = document.createElement('button')
-  knob.classList.add('namu-knob')
+  knob.classList.add('namu__knob')
   knob.addEventListener('click', () => {
-    if (knob.classList.contains('namu-knob--purse')) {
-      ul.style.display = 'block'
-      knob.classList.remove('namu-knob--purse')
+    if (knob.classList.contains('namu__knob--purse')) {
+      ul.removeAttribute('hidden')
+      knob.classList.remove('namu__knob--purse')
     } else {
-      ul.style.display = 'none'
-      knob.classList.add('namu-knob--purse')
+      ul.setAttribute('hidden', '')
+      knob.classList.add('namu__knob--purse')
     }
   })
 

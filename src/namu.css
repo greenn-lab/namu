@@ -19,19 +19,15 @@
 .namu li::before {
   border-left: 1px solid #AAA;
   content: "";
-  display: block;
   height: 100%;
   left: calc(var(--NAMU_SIZE) * -1);
   position: absolute;
-  top: 0;
-  width: calc(var(--NAMU_SIZE) / 2);
 }
 
 .namu li::after {
   border-bottom: 1px solid #AAA;
   border-left: 1px solid #AAA;
   content: "";
-  display: block;
   height: calc(var(--NAMU_SIZE) / 2);
   left: calc(var(--NAMU_SIZE) * -1);
   position: absolute;
@@ -46,8 +42,10 @@
 
 .namu li > a {
   border-radius: 4px;
+  box-sizing: border-box;
   display: inline-block;
   line-height: var(--NAMU_SIZE);
+  margin-left: var(--NAMU_SIZE_QTR);
   padding: 0 4px;
   transition: all .4s;
 }
@@ -63,11 +61,11 @@
   opacity: .5;
 }
 
-.namu ul:empty + .namu-knob {
+.namu ul:empty + .namu__knob {
   display: none;
 }
 
-.namu-knob {
+.namu__knob {
   background-color: transparent;
   border: 2px solid #FFF;
   height: calc(var(--NAMU_SIZE) / 2 + 1px);
@@ -79,7 +77,7 @@
   width: calc(var(--NAMU_SIZE) / 2 + 1px);
 }
 
-.namu-knob.namu-knob--purse {
+.namu__knob.namu__knob--purse {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' version='1.1' width='1' height='99' viewBox='0 0 1 99'%3E%3Cg%3E%3Cline style='stroke:rgb(170,170,170);stroke-width:1' x1='0' y1='0' x2='1' y2='99' /%3E%3C/g%3E%3C/svg%3E");
   background-position: 50% 50%;
   background-repeat: no-repeat;
