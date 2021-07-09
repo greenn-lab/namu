@@ -1,0 +1,16 @@
+{
+  "name": "namu",
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "main": "index.js",
+  "repository": "https://github.com/greenn-lab/namu.git",
+  "author": "green <greenn.lab@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "cssnano": "^5.0.6",
+    "postcss": "^8.3.5"
+  }
+}
