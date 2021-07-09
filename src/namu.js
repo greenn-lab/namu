@@ -48,6 +48,10 @@ const _becomeChildTo = parent => {
 }
 
 const _becomeBrotherTo = (brother, mouseY) => {
+  if (source.contains(brother)) {
+    return
+  }
+
   if (mouseY < NAMU_SIZE / NAMU_SIZE_QTR) {
     brother.before(source)
   }
