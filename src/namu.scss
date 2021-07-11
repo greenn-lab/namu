@@ -2,6 +2,8 @@ $namu-size: 24px;
 $namu-quarter-size: 6px;
 
 .namu {
+  cursor: default;
+
   ul,
   li {
     margin: 0;
@@ -48,10 +50,15 @@ $namu-quarter-size: 6px;
     }
   }
 
+  &--disabled {
+    cursor: not-allowed !important;
+  }
+
   &--dragging {
     background-color: #EEE;
-    outline: 1px dashed #AAA;
-    opacity: .3;
+    border: 1px dashed #AAA;
+    border-radius: 4px;
+    left: -1px;
   }
 
   &--zombie {

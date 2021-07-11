@@ -17,7 +17,6 @@ namu(document.querySelector('#root2'))
 })
 .drop(function () {
   console.log('called event "drop"')
-  return false
 })
 .dropped(function () {
   console.log('called event "dropped"')

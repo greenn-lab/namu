@@ -4,6 +4,7 @@ const NAMU_SIZE = 24
 const NAMU_SIZE_QTR = NAMU_SIZE / 4
 
 let source,
+    root,
     freeze,
     droppable,
     streamable,
@@ -14,20 +15,21 @@ let source,
 // functions
 // --------------------------------------------------
 const _init = (e) => {
+  source = e.target
+  root = source.closest('.namu')
+  freeze = null
   droppable = false
   streamable = true
   originalPlace = {}
-
-  source = e.target
   aim = e.offsetX
-}
 
-const _buildUpSource = () => {
+  source.classList.add('namu--dragging')
+
   originalPlace.next = source.nextElementSibling
   originalPlace.prev = source.previousElementSibling
   originalPlace.parent = source.parentElement
 
-  source.classList.add('namu--dragging')
+  e.dataTransfer.effectAllowed = 'move'
 }
 
 const _outOfArea = target => !target || !target.closest('.namu')
@@ -89,7 +91,7 @@ const _attachKnob = ul => {
 // --------------------------------------------------
 // events
 // --------------------------------------------------
-const _event = state => streamable && source.dispatchEvent(
+const _event = state => source.dispatchEvent(
     new Event(`namu.${state}`, {
       bubbles: true,
       started: source
@@ -98,31 +100,23 @@ const _event = state => streamable && source.dispatchEvent(
 
 const _dragStart = e => {
   _init(e)
-
   _event('start')
-  if (false === streamable) {
-    e.preventDefault()
-    return
-  }
-
-  _buildUpSource()
 }
 
 const _dragOver = e => {
   e.preventDefault()
 
   _event('over')
-  if (false === streamable) {
-    return
-  }
 
   const target = e.target.closest('li')
 
   if (_outOfArea(target) || freeze?.includes(target)) {
+    root.classList.add('namu--disabled')
     return
   }
 
   _freezing()
+  root.classList.remove('namu--disabled')
 
   const mouseX = e.offsetX - aim
   const mouseY = e.offsetY
@@ -150,9 +144,6 @@ const _drop = e => {
   e.preventDefault()
 
   _event('drop')
-  if (false === streamable) {
-    return
-  }
 
   droppable = true
   _event('dropped')
@@ -160,67 +151,69 @@ const _drop = e => {
 
 const _dragEnd = () => {
   if (!droppable) {
-    originalPlace.next && originalPlace.next.before(source)
-    originalPlace.prev && originalPlace.prev.after(source)
-    originalPlace.parent && originalPlace.parent.append(source)
+    if (originalPlace.next) {
+      originalPlace.next.before(source)
+    } else if (originalPlace.prev) {
+      originalPlace.prev.after(source)
+    } else if (originalPlace.parent) {
+      originalPlace.parent.append(source)
+    }
   }
 
   source.classList.remove('namu--dragging')
+  root.classList.remove('namu--disabled')
 
   _event('ended')
 }
 
-export default function (root) {
-  if (!root) {
+export default function (_root) {
+  if (!_root) {
     return
   }
 
-  root.classList.add('namu')
-  root
-  .querySelectorAll('li')
-  .forEach(li => {
+  _root.classList.add('namu')
+  _root.querySelectorAll('li').forEach(li => {
     li.setAttribute('draggable', 'true')
 
     const children = li.querySelector('ul')
     if (children) {
       _attachKnob(children)
     }
-
   })
 
-  root.addEventListener('dragstart', _dragStart)
-  root.addEventListener('dragover', _dragOver)
-  root.addEventListener('dragenter', _dragEnter)
-  root.addEventListener('drop', _drop)
-  root.addEventListener('dragend', _dragEnd)
+  _root.addEventListener('dragstart', _dragStart)
+  _root.addEventListener('dragover', _dragOver)
+  _root.addEventListener('dragenter', _dragEnter)
+  _root.addEventListener('drop', _drop)
+  _root.addEventListener('dragend', _dragEnd)
 
   return {
     start(fn) {
-      root.addEventListener('namu.start', e => streamable = fn.call(root, e))
+      _root.addEventListener('namu.start', e => fn.call(_root, e))
       return this
     },
     over(fn) {
-      root.addEventListener('namu.over', e => streamable = fn.call(root, e))
+      _root.addEventListener('namu.over', e => fn.call(_root, e))
       return this
     },
     overed(fn) {
-      root.addEventListener('namu.overed', e => fn.call(root, e))
+      _root.addEventListener('namu.overed', e => fn.call(_root, e))
       return this
     },
     entered(fn) {
-      root.addEventListener('namu.entered', e => fn.call(root, e))
+      _root.addEventListener('namu.entered', e => fn.call(_root, e))
       return this
     },
     drop(fn) {
-      root.addEventListener('namu.drop', e => streamable = fn.call(root, e))
+      _root.addEventListener('namu.drop', e => fn.call(_root, e))
       return this
     },
     dropped(fn) {
-      root.addEventListener('namu.dropped', e => fn.call(root, e))
+      _root.addEventListener('namu.dropped', e => fn.call(_root, e))
       return this
     },
     ended(fn) {
-      root.addEventListener('namu.ended', e => fn.call(root, e))
+      _root.addEventListener('namu.ended', e => fn.call(_root, e))
       return this
     }
   }
