@@ -2,8 +2,6 @@ $namu-size: 24px;
 $namu-quarter-size: 6px;
 
 .namu {
-  cursor: default;
-
   ul,
   li {
     margin: 0;
@@ -48,10 +46,6 @@ $namu-quarter-size: 6px;
       padding: 0 4px;
       transition: all .4s;
     }
-  }
-
-  &--disabled {
-    cursor: not-allowed !important;
   }
 
   &--dragging {

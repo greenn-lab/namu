@@ -1,7 +1,6 @@
 import './namu.scss'
 
 const NAMU_SIZE = 24
-const NAMU_SIZE_QTR = NAMU_SIZE / 4
 
 let source
 
@@ -30,24 +29,28 @@ const _becomeBrotherTo = (brother, mouseY) => {
     return
   }
 
-  if (mouseY < NAMU_SIZE / NAMU_SIZE_QTR) {
+  if (mouseY < NAMU_SIZE / 4) {
     brother.before(source)
   }
-  if (mouseY > NAMU_SIZE - NAMU_SIZE_QTR) {
+  if (mouseY > NAMU_SIZE - NAMU_SIZE / 4) {
     brother.after(source)
   }
 }
 
-const _canBeParent = mouseX => mouseX < -NAMU_SIZE_QTR
+const _canBeParent = mouseX => mouseX < -NAMU_SIZE / 2
     && !_outOfArea(source.parentElement?.parentElement)
 const _becomeParentTo = target => {
   _becomeBrotherTo(target, 999)
 }
 
 const _freezing = (target) => {
-  source.freeze = !target
-      ? null
-      : Array.from(target.querySelectorAll('li:not(.namu--dragging)'))
+  if (target) {
+    target.style.opacity = '.1'
+    source.freeze = target
+  } else if (source.freeze) {
+    source.freeze.style.opacity = ''
+    source.freeze = null
+  }
 }
 
 const _attachKnob = ul => {
@@ -72,7 +75,7 @@ const _attachKnob = ul => {
 const _dragStart = e => {
   source = e.target
   source.completed = false
-  source.freeze = undefined
+  source.freeze = null
   source.aim = e.offsetX
   source.family = {
     next: source.nextElementSibling,
@@ -81,8 +84,6 @@ const _dragStart = e => {
   }
 
   source.classList.add('namu--dragging')
-
-  e.dataTransfer.effectAllowed = 'move'
 }
 
 const _dragOver = e => {
@@ -90,8 +91,7 @@ const _dragOver = e => {
 
   const target = e.target.closest('li')
 
-  if (_outOfArea(target) || source.freeze?.includes(target)) {
-    e.dataTransfer.dropEffect = 'copy'
+  if (_outOfArea(target) || source.freeze?.contains(target)) {
     return
   }
 
@@ -114,7 +114,7 @@ const _dragOver = e => {
 
 const _drop = () => {
   source.completed = true
-  source.closest('.namu').dispatchEvent(
+  source.closest('.namu')?.dispatchEvent(
       new Event('namu.drop', {
         bubbles: true,
         source
@@ -134,15 +134,17 @@ const _dragEnd = () => {
   }
 
   source.classList.remove('namu--dragging')
+
+  _freezing()
 }
 
-export default function (_root) {
-  if (!_root) {
+export const namu = root => {
+  if (!root) {
     return
   }
 
-  _root.classList.add('namu')
-  _root.querySelectorAll('li').forEach(li => {
+  root.classList.add('namu')
+  root.querySelectorAll('li').forEach(li => {
     li.setAttribute('draggable', 'true')
 
     const children = li.querySelector('ul')
@@ -151,15 +153,15 @@ export default function (_root) {
     }
   })
 
-  _root.addEventListener('dragstart', _dragStart)
-  _root.addEventListener('dragover', _dragOver)
-  _root.addEventListener('dragenter', e => e.preventDefault())
-  _root.addEventListener('drop', _drop)
-  _root.addEventListener('dragend', _dragEnd)
+  root.addEventListener('dragstart', _dragStart)
+  root.addEventListener('dragover', _dragOver)
+  root.addEventListener('dragenter', e => e.preventDefault())
+  root.addEventListener('drop', _drop)
+  root.addEventListener('dragend', _dragEnd)
 
   return {
     drop(fn) {
-      _root.addEventListener('namu.drop', e => fn.call(_root, e))
+      root.addEventListener('namu.drop', e => fn.call(root, e))
       return this
     }
   }
