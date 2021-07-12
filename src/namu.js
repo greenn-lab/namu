@@ -1,7 +1,6 @@
 import './namu.scss'
 
 const NAMU_SIZE = 24
-const NAMU_SIZE_QTR = NAMU_SIZE / 4
 
 let source
 
@@ -30,10 +29,10 @@ const _becomeBrotherTo = (brother, mouseY) => {
     return
   }
 
-  if (mouseY < NAMU_SIZE_QTR) {
+  if (mouseY < NAMU_SIZE / 4) {
     brother.before(source)
   }
-  if (mouseY > NAMU_SIZE - NAMU_SIZE_QTR) {
+  if (mouseY > NAMU_SIZE - NAMU_SIZE / 4) {
     brother.after(source)
   }
 }
