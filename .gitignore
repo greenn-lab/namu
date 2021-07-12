@@ -1,6 +1,7 @@
 node_modules
 
 dist/*.js
+dist/*.map
 .cache
 
 .idea

@@ -1,12 +1,11 @@
 module.exports = {
-  entry: {
-    index: './index.js',
-    namu: './src/namu'
-  },
-  output: {
-    filename: '[name].js'
-  },
   mode: 'development',
+  entry: './src/namu.js',
+  output: {
+    libraryTarget: 'window',
+    filename: 'namu.js'
+  },
+  // devtool: 'cheap-source-map',
   devServer: {
     contentBase: './dist'
   },
@@ -16,7 +15,10 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader'
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env']
+          }
         }
       },
       {

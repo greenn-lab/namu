@@ -107,6 +107,14 @@
     document.write('<script src="https://polyfill.io/v3/polyfill.min.js?features=Element.prototype.after%2CElement.prototype.before%2CElement.prototype.closest%2CElement.prototype.append"><\/script>')
   }
 </script>
-<script src="./index.js"></script>
+<script src="./namu.js"></script>
+<script defer>
+  namu(document.querySelector('#root'))
+
+  namu(document.querySelector('#root2'))
+  .drop(function () {
+    console.log('called event "drop"!!')
+  })
+</script>
 </body>
 </html>

@@ -23,13 +23,8 @@
   },
   "homepage": "https://github.com/greenn-lab/namu#readme",
   "devDependencies": {
-    "@babel/cli": "^7.14.5",
     "@babel/core": "^7.14.6",
-    "@babel/plugin-transform-arrow-functions": "^7.14.5",
-    "@babel/plugin-transform-modules-commonjs": "^7.14.5",
-    "@babel/plugin-transform-runtime": "^7.14.5",
     "@babel/preset-env": "^7.14.7",
-    "@babel/runtime-corejs3": "^7.14.7",
     "babel-loader": "^8.2.2",
     "css-loader": "^5.2.6",
     "node-sass": "^6.0.1",
@@ -39,10 +34,6 @@
     "webpack": "^5.44.0",
     "webpack-cli": "^4.7.2",
     "webpack-dev-server": "^3.11.2"
-  },
-  "dependencies": {
-    "@babel/polyfill": "^7.12.1",
-    "core-js": "^3.6.5"
   },
   "browserslist": [
     "ie 11"
