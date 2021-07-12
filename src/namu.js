@@ -136,13 +136,13 @@ const _dragEnd = () => {
   source.classList.remove('namu--dragging')
 }
 
-export default function (_root) {
-  if (!_root) {
+const namu = (root) => {
+  if (!root) {
     return
   }
 
-  _root.classList.add('namu')
-  _root.querySelectorAll('li').forEach(li => {
+  root.classList.add('namu')
+  Array.from(root.querySelectorAll('li')).forEach(li => {
     li.setAttribute('draggable', 'true')
 
     const children = li.querySelector('ul')
@@ -151,16 +151,18 @@ export default function (_root) {
     }
   })
 
-  _root.addEventListener('dragstart', _dragStart)
-  _root.addEventListener('dragover', _dragOver)
-  _root.addEventListener('dragenter', e => e.preventDefault())
-  _root.addEventListener('drop', _drop)
-  _root.addEventListener('dragend', _dragEnd)
+  root.addEventListener('dragstart', _dragStart)
+  root.addEventListener('dragover', _dragOver)
+  root.addEventListener('dragenter', e => e.preventDefault())
+  root.addEventListener('drop', _drop)
+  root.addEventListener('dragend', _dragEnd)
 
   return {
     drop(fn) {
-      _root.addEventListener('namu.drop', e => fn.call(_root, e))
+      root.addEventListener('namu.drop', e => fn.call(root, e))
       return this
     }
   }
 }
+
+export default namu

@@ -1,7 +1,7 @@
 module.exports = {
   entry: {
-    index: ['./index.js'],
-    namu: ['./src/namu.js']
+    index: './index.js',
+    namu: './src/namu'
   },
   output: {
     filename: '[name].js'
@@ -10,7 +10,6 @@ module.exports = {
   devServer: {
     contentBase: './dist'
   },
-  target: 'web',
   module: {
     rules: [
       {
@@ -33,7 +32,7 @@ module.exports = {
           {
             loader: 'sass-loader',
             options: {
-              implementation: require.resolve('sass'),
+              implementation: 'sass'
             }
           }
         ]

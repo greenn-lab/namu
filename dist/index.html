@@ -102,7 +102,11 @@
   </li>
 </ul>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.12.1/polyfill.min.js"></script>
+<script>
+  if (/MSIE|Trident/.test(navigator.userAgent)) {
+    document.write('<script src="https://polyfill.io/v3/polyfill.min.js?features=Element.prototype.after%2CElement.prototype.before%2CElement.prototype.closest%2CElement.prototype.append"><\/script>')
+  }
+</script>
 <script src="./index.js"></script>
 </body>
 </html>
