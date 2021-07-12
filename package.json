@@ -1,17 +1,50 @@
 {
   "name": "namu",
   "version": "0.1.0",
+  "description": "Drag and drop on HTML UL tag based tree",
+  "main": "./src/namu.js",
   "scripts": {
-    "dev": "parcel index.html",
-    "build": "parcel build index.html"
+    "dev": "webpack serve",
+    "build": "webpack --mode=production"
   },
-  "main": "index.js",
-  "repository": "https://github.com/greenn-lab/namu.git",
-  "author": "green <greenn.lab@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/greenn-lab/namu.git"
+  },
+  "keywords": [
+    "drag and drop",
+    "dnd",
+    "tree"
+  ],
+  "author": "greenn.lab@gmail.com",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/greenn-lab/namu/issues"
+  },
+  "homepage": "https://github.com/greenn-lab/namu#readme",
   "devDependencies": {
-    "cssnano": "^5.0.6",
-    "postcss": "^8.3.5",
-    "sass": "^1.35.2"
-  }
+    "@babel/cli": "^7.14.5",
+    "@babel/core": "^7.14.6",
+    "@babel/plugin-transform-arrow-functions": "^7.14.5",
+    "@babel/plugin-transform-modules-commonjs": "^7.14.5",
+    "@babel/plugin-transform-runtime": "^7.14.5",
+    "@babel/preset-env": "^7.14.7",
+    "@babel/runtime-corejs3": "^7.14.7",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^5.2.6",
+    "node-sass": "^6.0.1",
+    "sass": "^1.35.2",
+    "sass-loader": "^12.1.0",
+    "style-loader": "^3.0.0",
+    "webpack": "^5.44.0",
+    "webpack-cli": "^4.7.2",
+    "webpack-dev-server": "^3.11.2"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.12.1",
+    "core-js": "^3.6.5"
+  },
+  "browserslist": [
+    "ie 11"
+  ]
 }
