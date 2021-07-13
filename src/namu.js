@@ -114,7 +114,7 @@ const _dragOver = e => {
 
 const _drop = () => {
   source.completed = true
-  source.closest('.namu')?.dispatchEvent(
+  source.dispatchEvent(
       new Event('namu.drop', {
         bubbles: true,
         source
