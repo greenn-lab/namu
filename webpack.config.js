@@ -3,7 +3,7 @@ module.exports = {
   entry: './src/namu.js',
   output: {
     libraryTarget: 'window',
-    filename: 'namu.js'
+    filename: 'namu.min.js'
   },
   // devtool: 'cheap-source-map',
   devServer: {
