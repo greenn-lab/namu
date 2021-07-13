@@ -30,7 +30,6 @@ $namu-quarter-size: 6px;
       position: absolute;
       top: 0;
       width: $namu-size;
-      z-index: -1;
     }
 
     &:last-child::before {
@@ -70,6 +69,7 @@ $namu-quarter-size: 6px;
     position: absolute;
     top: $namu-quarter-size;
     width: calc(#{$namu-size} / 2 + 1px);
+    z-index: 1;
   }
 
   &__knob--purse {
