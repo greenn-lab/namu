@@ -13,14 +13,7 @@ const _canBeChild = (mouseX, target) =>
     target.previousElementSibling && mouseX > NAMU_SIZE * 2
 const _becomeChildTo = parent => {
   if (parent) {
-    let children = parent.querySelector('ul')
-    if (!children) {
-      children = document.createElement('ul')
-      parent.append(children)
-      _attachKnob(children)
-    }
-
-    children.append(source)
+    parent.querySelector('ul').append(source)
   }
 }
 
@@ -51,22 +44,6 @@ const _freezing = (target) => {
     source.freeze.style.opacity = ''
     source.freeze = null
   }
-}
-
-const _attachKnob = ul => {
-  const knob = document.createElement('button')
-  knob.classList.add('namu__knob')
-  knob.addEventListener('click', () => {
-    if (knob.classList.contains('namu__knob--purse')) {
-      ul.removeAttribute('hidden')
-      knob.classList.remove('namu__knob--purse')
-    } else {
-      ul.setAttribute('hidden', '')
-      knob.classList.add('namu__knob--purse')
-    }
-  })
-
-  ul.after(knob)
 }
 
 // --------------------------------------------------
@@ -138,28 +115,53 @@ const _dragEnd = () => {
   _freezing()
 }
 
+const _clickKnob = e => {
+  const knob = e.target
+  if (knob.classList.contains('namu__knob')) {
+    const ul = knob.previousElementSibling
+
+    if (knob.classList.contains('namu__knob--purse')) {
+      ul.removeAttribute('hidden')
+      knob.classList.remove('namu__knob--purse')
+    } else {
+      ul.setAttribute('hidden', '')
+      knob.classList.add('namu__knob--purse')
+    }
+  }
+}
+
+const _add = li => {
+  li.setAttribute('draggable', 'true')
+
+  let children = li.querySelector('ul')
+  if (!children) {
+    children = document.createElement('ul')
+    li.append(children)
+  }
+
+  const knob = document.createElement('button')
+  knob.classList.add('namu__knob')
+
+  children.after(knob)
+}
+
 export const namu = root => {
   if (!root) {
     return
   }
 
   root.classList.add('namu')
-  root.querySelectorAll('li').forEach(li => {
-    li.setAttribute('draggable', 'true')
-
-    const children = li.querySelector('ul')
-    if (children) {
-      _attachKnob(children)
-    }
-  })
+  root.querySelectorAll('li').forEach(_add)
 
   root.addEventListener('dragstart', _dragStart)
   root.addEventListener('dragover', _dragOver)
   root.addEventListener('dragenter', e => e.preventDefault())
   root.addEventListener('drop', _drop)
   root.addEventListener('dragend', _dragEnd)
+  root.addEventListener('click', _clickKnob)
 
   return {
+    add: _add,
     drop(fn) {
       root.addEventListener('namu.drop', e => fn.call(root, e))
       return this
