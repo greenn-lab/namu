@@ -11,18 +11,8 @@ const _outOfArea = target => !target || !target.closest('.namu')
 
 const _canBeChild = (mouseX, target) =>
     target.previousElementSibling && mouseX > NAMU_SIZE * 2
-const _becomeChildTo = parent => {
-  if (parent) {
-    let children = parent.querySelector('ul')
-    if (!children) {
-      children = document.createElement('ul')
-      parent.append(children)
-      _attachKnob(children)
-    }
-
-    children.append(source)
-  }
-}
+const _becomeChildTo = parent =>
+    parent && parent.querySelector('ul').append(source)
 
 const _becomeBrotherTo = (brother, mouseY) => {
   if (source.contains(brother)) {
@@ -57,12 +47,10 @@ const _attachKnob = ul => {
   const knob = document.createElement('button')
   knob.classList.add('namu__knob')
   knob.addEventListener('click', () => {
-    if (knob.classList.contains('namu__knob--purse')) {
-      ul.removeAttribute('hidden')
-      knob.classList.remove('namu__knob--purse')
-    } else {
+    if (knob.classList.toggle('namu__knob--purse')) {
       ul.setAttribute('hidden', '')
-      knob.classList.add('namu__knob--purse')
+    } else {
+      ul.removeAttribute('hidden')
     }
   })
 
@@ -146,11 +134,16 @@ export const namu = root => {
   root.classList.add('namu')
   root.querySelectorAll('li').forEach(li => {
     li.setAttribute('draggable', 'true')
+    li.classList.add('namu__leaf')
 
-    const children = li.querySelector('ul')
-    if (children) {
-      _attachKnob(children)
+    let ul = li.querySelector('ul')
+    if (!ul) {
+      ul = document.createElement('ul')
+      li.append(ul)
     }
+
+    ul.classList.add('namu__branch')
+    _attachKnob(ul)
   })
 
   root.addEventListener('dragstart', _dragStart)

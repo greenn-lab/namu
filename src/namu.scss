@@ -1,23 +1,35 @@
-$namu-size: 24px;
-$namu-quarter-size: 6px;
+$namu-size: 1.5rem;
+$namu-half-size: 0.75rem; //$namu-size / 2
+$namu-quarter-size: 0.375rem; //$namu-size / 4
 
 .namu {
-  ul,
-  li {
+  margin: 0;
+  padding: 0;
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  &__leaf,
+  &__branch {
     margin: 0;
     list-style: none;
     padding: 0;
     position: relative;
   }
 
-  li {
+  &__branch:empty + &__knob {
+    display: none;
+  }
+
+  &__leaf {
     margin-left: $namu-size;
 
     &::before {
       border-left: 1px solid #AAA;
       content: "";
       height: 100%;
-      left: calc(#{$namu-size} * -1);
+      left: -$namu-quarter-size;
       position: absolute;
     }
 
@@ -25,10 +37,10 @@ $namu-quarter-size: 6px;
       border-bottom: 1px solid #AAA;
       border-left: 1px solid #AAA;
       content: "";
-      height: calc(#{$namu-size} / 2);
-      left: calc(#{$namu-size} * -1);
+      height: $namu-size;
+      left: -$namu-quarter-size;
       position: absolute;
-      top: 0;
+      top: -$namu-half-size;
       width: $namu-size;
     }
 
@@ -37,12 +49,11 @@ $namu-quarter-size: 6px;
     }
 
     > a {
-      border-radius: 4px;
+      border-radius: .25rem;
       box-sizing: border-box;
       display: inline-block;
       line-height: $namu-size;
-      margin-left: $namu-quarter-size;
-      padding: 0 4px;
+      margin-left: $namu-size;
       transition: all .4s;
     }
   }
@@ -50,7 +61,7 @@ $namu-quarter-size: 6px;
   &--dragging {
     background-color: #EEE;
     border: 1px dashed #AAA;
-    border-radius: 4px;
+    border-radius: .25rem;
     left: -1px;
   }
 
@@ -62,13 +73,13 @@ $namu-quarter-size: 6px;
   &__knob {
     background-color: transparent;
     border: 2px solid #FFF;
-    height: calc(#{$namu-size} / 2 + 1px);
-    left: calc(#{$namu-size} / 2 * -1);
+    height: calc(#{$namu-half-size} - 1px);
+    left: calc(#{$namu-quarter-size} + 1px);
     outline: 1px solid #AAA;
     padding: 0;
     position: absolute;
     top: $namu-quarter-size;
-    width: calc(#{$namu-size} / 2 + 1px);
+    width: calc(#{$namu-half-size} - 1px);
     z-index: 1;
   }
 
@@ -77,9 +88,4 @@ $namu-quarter-size: 6px;
     background-position: 50% 50%;
     background-repeat: no-repeat;
   }
-
-  ul:empty + &__knob {
-    display: none;
-  }
-
 }
