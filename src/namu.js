@@ -46,14 +46,6 @@ const _freezing = (target) => {
 const _attachKnob = ul => {
   const knob = document.createElement('button')
   knob.classList.add('namu__knob')
-  knob.addEventListener('click', () => {
-    if (knob.classList.toggle('namu__knob--purse')) {
-      ul.setAttribute('hidden', '')
-    } else {
-      ul.removeAttribute('hidden')
-    }
-  })
-
   ul.after(knob)
 }
 
@@ -126,33 +118,50 @@ const _dragEnd = () => {
   _freezing()
 }
 
+const _clickKnob = e => {
+  const knob = e.target
+  if (knob.classList.contains('namu__knob')) {
+    const ul = knob.previousElementSibling
+
+    if (knob.classList.toggle('namu__knob--purse')) {
+      ul.setAttribute('hidden', '')
+    } else {
+      ul.removeAttribute('hidden')
+    }
+  }
+}
+
+const _add = li => {
+  li.setAttribute('draggable', 'true')
+  li.classList.add('namu__leaf')
+
+  let ul = li.querySelector('ul')
+  if (!ul) {
+    ul = document.createElement('ul')
+    li.append(ul)
+  }
+
+  ul.classList.add('namu__branch')
+  _attachKnob(ul)
+}
+
 export const namu = root => {
   if (!root) {
     return
   }
 
   root.classList.add('namu')
-  root.querySelectorAll('li').forEach(li => {
-    li.setAttribute('draggable', 'true')
-    li.classList.add('namu__leaf')
-
-    let ul = li.querySelector('ul')
-    if (!ul) {
-      ul = document.createElement('ul')
-      li.append(ul)
-    }
-
-    ul.classList.add('namu__branch')
-    _attachKnob(ul)
-  })
+  root.querySelectorAll('li').forEach(_add)
 
   root.addEventListener('dragstart', _dragStart)
   root.addEventListener('dragover', _dragOver)
   root.addEventListener('dragenter', e => e.preventDefault())
   root.addEventListener('drop', _drop)
   root.addEventListener('dragend', _dragEnd)
+  root.addEventListener('click', _clickKnob)
 
   return {
+    add: _add,
     drop(fn) {
       root.addEventListener('namu.drop', e => fn.call(root, e))
       return this
