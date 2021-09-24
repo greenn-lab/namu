@@ -105,6 +105,9 @@
 <script src="./namu.min.js"></script>
 <script defer>
   var root = document.querySelector('#root')
+
+  namu(root)
+
   root.addEventListener('namu.drop', function (e) {
     console.log('dropped!', e.target)
   })
@@ -112,12 +115,8 @@
     console.log('moved!', e.target)
   })
 
-  namu(root)
 
   namu(document.querySelector('#root2'))
-  .drop(function () {
-    console.log('called event "drop"!!', arguments)
-  })
 </script>
 </body>
 </html>

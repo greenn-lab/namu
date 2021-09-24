@@ -103,7 +103,7 @@ const _dragOver = e => {
 const _drop = () => {
   source.completed = true
   source.dispatchEvent(
-      new CustomEvent('namu.drop', {
+      new CustomEvent('namu:drop', {
         bubbles: true,
         source
       })
@@ -148,7 +148,7 @@ const _eventShoveUp = (from, to) => {
     }
 
     el.dispatchEvent(
-        new CustomEvent('namu.move', {
+        new CustomEvent('namu:move', {
           bubbles: true,
           el
         })
@@ -181,7 +181,7 @@ const _clickKnob = e => {
   }
 }
 
-const _add = li => {
+const add = li => {
   li.setAttribute('draggable', 'true')
   li.classList.add('namu__leaf')
 
@@ -209,13 +209,9 @@ export const namu = root => {
   root.addEventListener('dragend', _dragEnd)
   root.addEventListener('click', _clickKnob)
 
-  Array.prototype.forEach.call(root.querySelectorAll('li'), _add)
+  Array.prototype.forEach.call(root.querySelectorAll('li'), add)
 
   return {
-    add: _add,
-    drop(fn) {
-      root.addEventListener('namu.drop', e => fn.call(root, e))
-      return this
-    }
+    add
   }
 }
