@@ -27,17 +27,19 @@ const _becomeBrotherTo = (brother, mouseY) => {
   }
 }
 
-const _canBeParent = mouseX => mouseX < -NAMU_SIZE / 2
-    && !_outOfArea(source.parentElement?.parentElement)
+const _canBeParent = mouseX =>
+    mouseX < -NAMU_SIZE / 2 && !_outOfArea(source.parentElement?.parentElement)
 const _becomeParentTo = target => {
   _becomeBrotherTo(target, 999)
 }
 
 const _freezing = (target) => {
-  if (target) {
-    target.style.opacity = '.1'
-    source.freeze = target
-  } else if (source.freeze) {
+  target.style.opacity = '.1'
+  source.freeze = target
+}
+
+const _melting = () => {
+  if (source.freeze) {
     source.freeze.style.opacity = ''
     source.freeze = null
   }
@@ -56,7 +58,8 @@ const _dragStart = e => {
   source = e.target
   source.completed = false
   source.freeze = null
-  source.aim = e.offsetX
+  source.aim = e.pageX - source.getBoundingClientRect().x
+  source.seat = _getSeatNumber(source)
   source.family = {
     next: source.nextElementSibling,
     prev: source.previousElementSibling,
@@ -75,20 +78,19 @@ const _dragOver = e => {
     return
   }
 
-  _freezing()
-
-  const mouseX = e.offsetX - source.aim
-  const mouseY = e.offsetY
+  _melting()
 
   if (source === target) {
+    const mouseX = e.pageX - source.getBoundingClientRect().x - source.aim
+
     if (_canBeChild(mouseX, target)) {
       _becomeChildTo(source.previousElementSibling)
     } else if (_canBeParent(mouseX)) {
-      _freezing(target.parentElement)
+      target.parentElement && _freezing(target.parentElement)
       _becomeParentTo(source.parentElement.parentElement)
     }
   } else {
-    _becomeBrotherTo(target, mouseY)
+    _becomeBrotherTo(target, e.offsetY)
   }
 }
 
@@ -100,6 +102,19 @@ const _drop = () => {
         source
       })
   )
+
+  if (source.parentElement !== source.family.parent) {
+    _eventShoveUp(source.family.next)
+    _eventShoveUp(source.nextElementSibling)
+  } else {
+    const seat = _getSeatNumber(source)
+
+    if (seat < source.seat) {
+      _eventShoveUp(source.nextElementSibling, source.family.next)
+    } else if (seat > source.seat) {
+      _eventShoveUp(source.family.next, source)
+    }
+  }
 }
 
 const _dragEnd = () => {
@@ -115,7 +130,36 @@ const _dragEnd = () => {
 
   source.classList.remove('namu--dragging')
 
-  _freezing()
+  _melting()
+}
+
+const _eventShoveUp = (from, to) => {
+  let el = from
+
+  do {
+    if (!el || el === to) {
+      break
+    }
+
+    el.dispatchEvent(
+        new Event('namu.move', {
+          bubbles: true,
+          el
+        })
+    )
+  }
+  while ((el = el.nextElementSibling))
+}
+
+const _getSeatNumber = el => {
+  const all = el.parentElement.children
+  for (let i = 0; i < all.length; i++) {
+    if (all[i] === el) {
+      return i
+    }
+  }
+
+  return -1
 }
 
 const _clickKnob = e => {

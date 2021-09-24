@@ -109,7 +109,15 @@
 </script>
 <script src="./namu.min.js"></script>
 <script defer>
-  namu(document.querySelector('#root'))
+  var root = document.querySelector('#root')
+  root.addEventListener('namu.drop', function (e) {
+    console.log('dropped!', e.target)
+  })
+  root.addEventListener('namu.move', function (e) {
+    console.log('moved!', e.target)
+  })
+
+  namu(root)
 
   namu(document.querySelector('#root2'))
   .drop(function () {
