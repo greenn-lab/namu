@@ -1,3 +1,9 @@
+import 'mdn-polyfills/Element.prototype.closest'
+import 'mdn-polyfills/Node.prototype.after'
+import 'mdn-polyfills/Node.prototype.append'
+import 'mdn-polyfills/Node.prototype.before'
+import 'mdn-polyfills/CustomEvent'
+
 import './namu.scss'
 
 const NAMU_SIZE = 24
@@ -97,7 +103,7 @@ const _dragOver = e => {
 const _drop = () => {
   source.completed = true
   source.dispatchEvent(
-      new Event('namu.drop', {
+      new CustomEvent('namu.drop', {
         bubbles: true,
         source
       })
@@ -142,7 +148,7 @@ const _eventShoveUp = (from, to) => {
     }
 
     el.dispatchEvent(
-        new Event('namu.move', {
+        new CustomEvent('namu.move', {
           bubbles: true,
           el
         })
@@ -195,7 +201,6 @@ export const namu = root => {
   }
 
   root.classList.add('namu')
-  root.querySelectorAll('li').forEach(_add)
 
   root.addEventListener('dragstart', _dragStart)
   root.addEventListener('dragover', _dragOver)
@@ -203,6 +208,8 @@ export const namu = root => {
   root.addEventListener('drop', _drop)
   root.addEventListener('dragend', _dragEnd)
   root.addEventListener('click', _clickKnob)
+
+  Array.prototype.forEach.call(root.querySelectorAll('li'), _add)
 
   return {
     add: _add,

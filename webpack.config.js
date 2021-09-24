@@ -7,7 +7,7 @@ module.exports = {
   },
   // devtool: 'cheap-source-map',
   devServer: {
-    contentBase: './dist'
+    static: './dist'
   },
   module: {
     rules: [
