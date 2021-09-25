@@ -201,7 +201,7 @@ const _clickKnob = e => {
 
 const add = li => {
   li.setAttribute('draggable', 'true')
-  li.classList.add('namu__leaf')
+  li.classList.add('namu__branch')
 
   let ul = li.querySelector('ul')
   if (!ul) {
@@ -209,7 +209,7 @@ const add = li => {
     li.append(ul)
   }
 
-  ul.classList.add('namu__branch')
+  ul.classList.add('namu__fork')
   _attachKnob(ul)
 }
 

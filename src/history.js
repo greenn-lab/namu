@@ -31,6 +31,11 @@ const rewind = item => {
   } else if (item.parent) {
     item.parent.append(item.source)
   }
+
+  item.source.classList.add('namu__branch--blink')
+  setTimeout(() =>
+      item.source.classList.remove('namu__branch--blink'), 1000)
+
 }
 
 const history = (before, after) => {

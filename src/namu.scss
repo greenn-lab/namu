@@ -12,15 +12,15 @@
     box-sizing: border-box;
   }
 
-  &__leaf,
-  &__branch {
+  &__branch,
+  &__fork {
     margin: 0;
     list-style: none;
     padding: 0;
     position: relative;
   }
 
-  &__branch {
+  &__fork {
     border-left: 1px solid var(--line-color);
     padding-left: var(--size);
     margin-bottom: var(--half-size);
@@ -31,10 +31,14 @@
     }
   }
 
-  &__leaf {
+  &__branch {
     padding: 0 var(--half-size);
 
-    &:last-child > .namu__branch {
+    &--blink {
+      animation: blinker .2s 2;
+    }
+
+    &:last-child > .namu__fork {
       border-left: 0;
     }
 
@@ -75,5 +79,11 @@
   &--zombie {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' version='1.1' width='8' height='8' viewBox='0 0 8 8'%3E%3Cg%3E%3Cline style='stroke:rgb(220,220,220);stroke-width:1' x1='8' y1='0' x2='-0' y2='8' /%3E%3C/g%3E%3C/svg%3E");
     opacity: .5;
+  }
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
   }
 }
