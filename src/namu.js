@@ -4,6 +4,8 @@ import 'mdn-polyfills/Node.prototype.append'
 import 'mdn-polyfills/Node.prototype.before'
 import 'mdn-polyfills/CustomEvent'
 
+import history from './history'
+
 import './namu.scss'
 
 const NAMU_SIZE = 24
@@ -101,6 +103,12 @@ const _dragOver = e => {
 }
 
 const _drop = () => {
+  if (source.parentElement === source.family.parent &&
+      source.previousElementSibling === source.family.prev &&
+      source.nextElementSibling === source.family.next) {
+    return
+  }
+
   source.completed = true
   source.dispatchEvent(
       new CustomEvent('namu:drop', {
@@ -121,6 +129,16 @@ const _drop = () => {
       _eventShoveUp(source.family.next, source)
     }
   }
+
+  history(
+      {source, ...source.family},
+      {
+        source,
+        parent: source.parentElement,
+        prev: source.previousElementSibling,
+        next: source.nextElementSibling
+      }
+  )
 }
 
 const _dragEnd = () => {

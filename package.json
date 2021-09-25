@@ -1,6 +1,6 @@
 {
   "name": "namu",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Drag and drop on HTML UL tag based tree",
   "main": "./src/namu.js",
   "scripts": {
