@@ -21,9 +21,7 @@
   }
 
   &__fork {
-    border-left: 1px solid var(--line-color);
-    padding-left: var(--size);
-    margin-bottom: var(--half-size);
+    margin-left: var(--size);
 
     &:empty,
     &:empty + .namu__knob {
@@ -32,21 +30,33 @@
   }
 
   &__branch {
-    padding: 0 var(--half-size);
+    line-height: var(--size);
+    padding-left: var(--qtr-size);
 
     &--blink {
       animation: blinker .2s 2;
     }
 
-    &:last-child > .namu__fork {
-      border-left: 0;
+    &:not(:last-child)::before {
+      background-color: var(--line-color);
+      content: "";
+      height: 100%;
+      left: 0;
+      position: absolute;
+      width: 1px;
+    }
+
+    &:last-child::before {
+      background-color: var(--line-color);
+      content: "";
+      height: calc(var(--size) - var(--qtr-size));
+      left: 0;
+      position: absolute;
+      width: 1px;
     }
 
     > a {
-      border-radius: .25rem;
-      box-sizing: border-box;
-      display: inline-block;
-      line-height: var(--size);
+      padding: 0 var(--qtr-size);
     }
   }
 
@@ -64,11 +74,11 @@
     background-repeat: no-repeat;
     border: 2px solid #FFF;
     height: var(--half-size);
-    left: calc(var(--size) / -4);
+    left: calc(var(--qtr-size) * -1);
     outline: 1px solid var(--line-color);
     padding: 0;
     position: absolute;
-    top: calc(var(--size) / 4);
+    top: var(--qtr-size);
     width: var(--half-size);
   }
 
