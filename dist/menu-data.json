@@ -1,0 +1,128 @@
+[
+  {
+    "name": "Back-office Menu",
+    "children": [
+      {
+        "name": "Main Works",
+        "children": [
+          {
+            "name": "Receipt"
+          },
+          {
+            "name": "Approve Process"
+          }
+        ]
+      },
+      {
+        "name": "System",
+        "children": [
+          {
+            "name": "User"
+          },
+          {
+            "name": "Menu"
+          }
+        ]
+      },
+      {
+        "name": "Dashboard",
+        "children": [
+          {
+            "name": "Analytics"
+          }
+        ]
+      },
+      {
+        "name": "Pages",
+        "children": [
+          {
+            "name": "Authentication",
+            "children": [
+              {
+                "name": "Sign up",
+                "children": [
+                  {
+                    "name": "Classic"
+                  },
+                  {
+                    "name": "Modern"
+                  }
+                ]
+              },
+              {
+                "name": "Login",
+                "children": [
+                  {
+                    "name": "Classic"
+                  },
+                  {
+                    "name": "Screen Play",
+                    "children": [
+                      {
+                        "name": "Fullscreen"
+                      },
+                      {
+                        "name": "Split screen"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Help center"
+          },
+          {
+            "name": "Home"
+          },
+          {
+            "name": "Support"
+          },
+          {
+            "name": "Errors",
+            "children": [
+              {
+                "name": "Page not found"
+              },
+              {
+                "name": "Internal server error"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "User Interface",
+        "children": [
+          {
+            "name": "Animation"
+          },
+          {
+            "name": "Form",
+            "children": [
+              {
+                "name": "Fields"
+              },
+              {
+                "name": "Layouts"
+              },
+              {
+                "name": "Wizards"
+              }
+            ]
+          },
+          {
+            "name": "Icons"
+          },
+          {
+            "name": "Cards"
+          },
+          {
+            "name": "Colors"
+          }
+        ]
+      }
+    ]
+  }
+]
