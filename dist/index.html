@@ -7,116 +7,28 @@
   <title>namu</title>
 </head>
 <body>
-<ul id="root">
-  <li>
-    <a>community</a>
-    <ul>
-      <li>
-        <a>notify</a>
-        <ul>
-          <li><a>Notice</a></li>
-          <li><a>Board</a></li>
-          <li><a>Q &amp; A</a></li>
-          <li><a>Dataroom</a></li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a>System</a>
-    <ul>
-      <li>
-        <a>Information</a>
-        <ul>
-          <li><a>Code Management</a></li>
-          <li><a>Orgnization</a></li>
-          <li><a>User Managerment</a></li>
-        </ul>
-      </li>
-      <li>
-        <a>Access and Menu</a>
-        <ul>
-          <li><a>Menu Management</a></li>
-          <li><a>Granted</a></li>
-          <li><a>User Group</a></li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <a>Example</a>
-    <ul>
-      <li>
-        <a>Grid</a>
-        <ul>
-          <li><a>Inquiry and Link</a></li>
-          <li><a>Pagination - Origin</a></li>
-          <li><a>Pagination - Database</a></li>
-          <li><a>Cell Edit</a></li>
-          <li><a>Multiple Delete</a></li>
-          <li><a>Add Row &amp; Save All</a></li>
-        </ul>
-      </li>
-      <li>
-        <a>Validation</a>
-        <ul>
-          <li><a>Form</a></li>
-          <li><a>Form &amp; grid</a></li>
-        </ul>
-      </li>
-      <li>
-        <a>Excel</a>
-        <ul>
-          <li><a>Excel Upload/Download</a></li>
-        </ul>
-      </li>
-      <li>
-        <a>Common Module</a>
-        <ul>
-          <li><a>FancyBox (Layer Popup)</a></li>
-          <li><a>File handling</a></li>
-          <li><a>Condition setup</a></li>
-          <li><a>FileUpload_test</a></li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-</ul>
+<ul id="playground"></ul>
 
-<hr>
-
-<ul id="root2">
-  <li>
-    <a>community</a>
-    <ul>
-      <li>
-        <a>notify</a>
-        <ul>
-          <li><a>Notice</a></li>
-          <li><a>Board</a></li>
-          <li><a>Q &amp; A</a></li>
-          <li><a>Dataroom</a></li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-</ul>
-
-<script src="../dist/namu.min.js"></script>
+<script src="./namu.min.js"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=fetch%2CPromise"></script>
 <script defer>
-  var root = document.querySelector('#root')
+  fetch('menu-data.json')
+  .then(res => res.json())
+  .then(json => {
 
-  namu(root)
+    var playground = document.querySelector('#playground')
 
-  root.addEventListener('namu:drop', function (e) {
-    console.log('dropped!', e.target)
+    namu(playground, json)
+
+    playground.addEventListener('namu:drop', function (e) {
+      console.log('dropped!', e.target)
+    })
+    playground.addEventListener('namu:move', function (e) {
+      console.log('moved!', e.target)
+    })
+
   })
-  root.addEventListener('namu:move', function (e) {
-    console.log('moved!', e.target)
-  })
 
-
-  namu(document.querySelector('#root2'))
 </script>
 </body>
 </html>

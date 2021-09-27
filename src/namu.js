@@ -8,7 +8,10 @@ import history from './history'
 
 import './namu.scss'
 
-const NAMU_SIZE = 24
+
+const NAMU_SIZE = parseInt(window.getComputedStyle(document.body).fontSize)
+
+const BEM_PREFIX = 'namu__'
 
 let source
 
@@ -51,12 +54,6 @@ const _melting = () => {
     source.freeze.style.opacity = ''
     source.freeze = null
   }
-}
-
-const _attachKnob = ul => {
-  const knob = document.createElement('button')
-  knob.classList.add('namu__knob')
-  ul.after(knob)
 }
 
 // --------------------------------------------------
@@ -188,10 +185,10 @@ const _getSeatNumber = el => {
 
 const _clickKnob = e => {
   const knob = e.target
-  if (knob.classList.contains('namu__knob')) {
+  if (knob.classList.contains(`${BEM_PREFIX}knob`)) {
     const ul = knob.previousElementSibling
 
-    if (knob.classList.toggle('namu__knob--purse')) {
+    if (knob.classList.toggle(`${BEM_PREFIX}knob--purse`)) {
       ul.setAttribute('hidden', '')
     } else {
       ul.removeAttribute('hidden')
@@ -199,26 +196,36 @@ const _clickKnob = e => {
   }
 }
 
-const add = li => {
+const grow = (parent, data) => {
+  const a = document.createElement('a')
+  a.textContent = data.name
+
+  const ul = document.createElement('ul')
+  ul.classList.add(`${BEM_PREFIX}fork`)
+
+  data.children?.forEach(i => grow(ul, i))
+
+  const knob = document.createElement('button')
+  knob.classList.add(`${BEM_PREFIX}knob`)
+
+  const li = document.createElement('li')
+  li.classList.add(`${BEM_PREFIX}branch`)
   li.setAttribute('draggable', 'true')
-  li.classList.add('namu__branch')
+  li.append(a, ul, knob)
 
-  let ul = li.querySelector('ul')
-  if (!ul) {
-    ul = document.createElement('ul')
-    li.append(ul)
-  }
-
-  ul.classList.add('namu__fork')
-  _attachKnob(ul)
+  parent.append(li)
 }
 
-export const namu = root => {
-  if (!root) {
-    return
+export const namu = (root, data) => {
+  if (!root || !data) {
+    throw new Error('Not able to start.')
   }
 
   root.classList.add('namu')
+
+  Array.isArray(data)
+      ? data.forEach(i => grow(root, i))
+      : grow(root, data)
 
   root.addEventListener('dragstart', _dragStart)
   root.addEventListener('dragover', _dragOver)
@@ -227,9 +234,7 @@ export const namu = root => {
   root.addEventListener('dragend', _dragEnd)
   root.addEventListener('click', _clickKnob)
 
-  Array.prototype.forEach.call(root.querySelectorAll('li'), add)
-
   return {
-    add
+    grow
   }
 }
