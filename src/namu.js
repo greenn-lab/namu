@@ -8,7 +8,6 @@ import history from './history'
 
 import './namu.scss'
 
-
 const NAMU_SIZE = parseInt(window.getComputedStyle(document.body).fontSize)
 
 const BEM_PREFIX = 'namu__'
@@ -107,12 +106,8 @@ const _drop = () => {
   }
 
   source.completed = true
-  source.dispatchEvent(
-      new CustomEvent('namu:drop', {
-        bubbles: true,
-        source
-      })
-  )
+
+  _dispatch('fall', source)
 
   if (source.parentElement !== source.family.parent) {
     _eventShoveUp(source.family.next)
@@ -155,21 +150,16 @@ const _dragEnd = () => {
 }
 
 const _eventShoveUp = (from, to) => {
-  let el = from
+  let target = from
 
   do {
-    if (!el || el === to) {
+    if (!target || target === to) {
       break
     }
 
-    el.dispatchEvent(
-        new CustomEvent('namu:move', {
-          bubbles: true,
-          el
-        })
-    )
+    _dispatch('shove', target)
   }
-  while ((el = el.nextElementSibling))
+  while ((target = target.nextElementSibling))
 }
 
 const _getSeatNumber = el => {
@@ -183,17 +173,27 @@ const _getSeatNumber = el => {
   return -1
 }
 
-const _clickKnob = e => {
-  const knob = e.target
-  if (knob.classList.contains(`${BEM_PREFIX}knob`)) {
-    const ul = knob.previousElementSibling
+const _click = e => {
+  const target = e.target
 
-    if (knob.classList.toggle(`${BEM_PREFIX}knob--purse`)) {
-      ul.setAttribute('hidden', '')
-    } else {
-      ul.removeAttribute('hidden')
-    }
+  if (target.classList.contains(`${BEM_PREFIX}knob`)) {
+    _clickKnob(target)
+  } else {
+    _dispatch('sway', target.closest('li'))
   }
+}
+
+const _clickKnob = knob => {
+  const ul = knob.previousElementSibling
+  const crush = knob.classList.toggle(`${BEM_PREFIX}knob--crush`)
+
+  if (crush) {
+    ul.setAttribute('hidden', '')
+  } else {
+    ul.removeAttribute('hidden')
+  }
+
+  _dispatch('crush', knob, {crush})
 }
 
 const grow = (parent, data) => {
@@ -216,25 +216,46 @@ const grow = (parent, data) => {
   parent.append(li)
 }
 
-export const namu = (root, data) => {
-  if (!root || !data) {
-    throw new Error('Not able to start.')
-  }
+const _dispatch = (eventName, el, detail) => {
+  el.dispatchEvent(
+      new CustomEvent(`namu:${eventName}`, {
+        bubbles: true,
+        detail: {
+          target: el,
+          ...detail
+        }
+      })
+  )
+}
 
-  root.classList.add('namu')
+export const namu = {
+  dispatch: _dispatch,
+  plant(data) {
+    return {
+      on(element) {
+        if (!element || !data) {
+          throw new Error('Not able to start.')
+        }
 
-  Array.isArray(data)
-      ? data.forEach(i => grow(root, i))
-      : grow(root, data)
+        element.classList.add('namu')
 
-  root.addEventListener('dragstart', _dragStart)
-  root.addEventListener('dragover', _dragOver)
-  root.addEventListener('dragenter', e => e.preventDefault())
-  root.addEventListener('drop', _drop)
-  root.addEventListener('dragend', _dragEnd)
-  root.addEventListener('click', _clickKnob)
+        Array.isArray(data)
+            ? data.forEach(i => grow(element, i))
+            : grow(element, data)
 
-  return {
-    grow
+        element.addEventListener('dragstart', _dragStart)
+        element.addEventListener('dragover', _dragOver)
+        element.addEventListener('dragenter', e => e.preventDefault())
+        element.addEventListener('drop', _drop)
+        element.addEventListener('dragend', _dragEnd)
+        element.addEventListener('click', _click)
+
+        _dispatch('grown', element)
+
+        return {
+          grow
+        }
+      }
+    }
   }
 }

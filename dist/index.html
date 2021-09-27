@@ -18,15 +18,44 @@
 
     var playground = document.querySelector('#playground')
 
-    namu(playground, json)
-
-    playground.addEventListener('namu:drop', function (e) {
-      console.log('dropped!', e.target)
+    // will be triggered after create all branches completely
+    playground.addEventListener('namu:grown', function (e) {
+      console.log('grown!', e.target)
     })
-    playground.addEventListener('namu:move', function (e) {
+
+    // will be triggered after drag and drop
+    playground.addEventListener('namu:fall', function (e) {
+      console.log('fall!', e.target)
+    })
+
+    // it is pulled or pushed to trigger
+    // an element that has changed its order
+    playground.addEventListener('namu:shove', function (e) {
       console.log('moved!', e.target)
     })
 
+    // will be triggered by [+] or [-] button
+    playground.addEventListener('namu:crush', function (e) {
+      console.log('crush!', e.target, e.detail)
+    })
+
+    // will be triggered if you sway the branches
+    playground.addEventListener('namu:sway', function (e) {
+      console.log('sway!', e.target)
+    })
+
+    // will be triggered undo
+    playground.addEventListener('namu:undo', function (e) {
+      console.log('undo!', e.detail)
+    })
+
+    // will be triggered redo
+    playground.addEventListener('namu:redo', function (e) {
+      console.log('redo!', e.detail)
+    })
+
+
+    namu.plant(json).on(playground)
   })
 
 </script>

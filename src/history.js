@@ -1,3 +1,5 @@
+import {namu} from './namu'
+
 const stack = []
 let cursor = 0
 
@@ -12,13 +14,28 @@ document.addEventListener('keydown', e => {
 const undo = () => {
   if (cursor > 0) {
     --cursor
-    rewind(stack[cursor].before)
+
+    const {before} = stack[cursor]
+    rewind(before)
+
+    namu.dispatch('undo', before.source, {
+      stack,
+      cursor
+    })
   }
 }
 
 const redo = () => {
   if (cursor < stack.length) {
-    rewind(stack[cursor].after)
+    const {after} = stack[cursor];
+    rewind(after)
+
+    namu.dispatch('redo', after.source, {
+      stack,
+      cursor
+    })
+
+
     ++cursor
   }
 }
