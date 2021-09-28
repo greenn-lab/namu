@@ -28,9 +28,12 @@
   "devDependencies": {
     "@babel/core": "^7.14.6",
     "@babel/preset-env": "^7.14.7",
+    "autoprefixer": "^10.3.6",
     "babel-loader": "^8.2.2",
     "css-loader": "^5.2.6",
     "node-sass": "^6.0.1",
+    "postcss-css-variables": "^0.18.0",
+    "postcss-loader": "^6.1.1",
     "sass": "^1.35.2",
     "sass-loader": "^12.1.0",
     "style-loader": "^3.0.0",

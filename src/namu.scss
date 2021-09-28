@@ -1,8 +1,8 @@
 .namu {
   --line-color: #AAA;
   --size: 1.5rem;
-  --half-size: calc(var(--size) / 2);
-  --qtr-size: calc(var(--size) / 4);
+  --half-size: calc(var(--size, 1.5rem) / 2);
+  --qtr-size: calc(var(--size, 1.5rem) / 4);
 
   margin: 0 0 0 1rem;
   padding: 0;
@@ -20,7 +20,7 @@
   }
 
   &__fork {
-    margin-left: var(--size);
+    margin-left: var(--size, 1.5rem);
 
     &:empty,
     &:empty + .namu__knob {
@@ -29,15 +29,15 @@
   }
 
   &__branch {
-    line-height: var(--size);
-    padding-left: var(--qtr-size);
+    line-height: var(--size, 1.5rem);
+    padding-left: var(--qtr-size, 0.375rem);
 
     &--blink {
       animation: blinker .2s 2;
     }
 
     &:not(:last-child)::before {
-      background-color: var(--line-color);
+      background-color: var(--line-color, #AAA);
       content: "";
       height: 100%;
       left: 0;
@@ -46,16 +46,16 @@
     }
 
     &:last-child::before {
-      background-color: var(--line-color);
+      background-color: var(--line-color, #AAA);
       content: "";
-      height: calc(var(--size) - var(--qtr-size));
+      height: calc(var(--size, 1.5rem) - var(--qtr-size, 0.375rem));
       left: 0;
       position: absolute;
       width: 1px;
     }
 
     > a {
-      padding: 0 var(--qtr-size);
+      padding: 0 var(--qtr-size, 0.375rem);
     }
 
     &--wilt {
@@ -71,7 +71,7 @@
 
   &--dragging {
     background-color: #EEE;
-    border: 1px dashed var(--line-color);
+    border: 1px dashed var(--line-color, #AAA);
     border-radius: .25rem;
     left: -1px;
   }
@@ -82,13 +82,13 @@
     background-position: 50% 50%;
     background-repeat: no-repeat;
     border: 2px solid #FFF;
-    height: var(--half-size);
-    left: calc(var(--qtr-size) * -1);
-    outline: 1px solid var(--line-color);
+    height: var(--half-size, 0.75rem);
+    left: calc(var(--qtr-size, 0.375rem) * -1);
+    outline: 1px solid var(--line-color, #AAA);
     padding: 0;
     position: absolute;
-    top: var(--qtr-size);
-    width: var(--half-size);
+    top: var(--qtr-size, 0.375rem);
+    width: var(--half-size, 0.75rem);
   }
 
   &__knob--crush {
